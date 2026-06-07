@@ -1,0 +1,33 @@
+{% load static %}
+<html>
+<head>
+<title>View Party</title>
+<link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<h2 align="center">Party Details</h2>
+
+<table border="1" align="center" width="70%">
+    <tr>
+        <th>Candidate Name</th>
+        <th>Party Name</th>
+        <th>Area Name</th>
+        <th>Image</th>
+    </tr>
+
+    {% for c in candidates %}
+    <tr align="center">
+        <td>{{ c.cname }}</td>
+        <td>{{ c.pname }}</td>
+        <td>{{ c.area }}</td>
+        <td>
+            <img src="{{ c.image }}" width="100" height="100">
+        </td>
+    </tr>
+    {% endfor %}
+
+</table>
+
+</body>
+</html>

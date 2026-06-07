@@ -1,0 +1,66 @@
+{% load static %}
+<html>
+<head>
+<title>E-Voting</title>
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}"/>
+</head>
+<body>
+<div id="wrapper">
+    
+    <div id="header">
+        <div id="logo">
+            <center>
+                <font size="4" color="yellow">
+                    Blockchain E-Voting Done Right: Privacy and Transparency with Public Blockchain
+                </font>
+            </center>
+        </div>
+    </div>
+
+    <div id="menu">
+        <ul><center>
+            <li><a href="{% url 'CastVote' %}">Cast Your Vote</a></li>
+            <li><a href="{% url 'index' %}">Logout</a></li>        
+        </center></ul>
+        <br class="clearfix" />
+    </div>
+
+    <div id="splash">
+        <img class="pic" src="{% static 'images/investor.jpg' %}" width="870" height="230" alt="" />
+    </div>
+
+    <br/>
+
+    <!-- ✅ TABLE STARTS HERE -->
+    <center>
+    <table border="1" width="80%">
+        <tr>
+            <th>Candidate Name</th>
+            <th>Party Name</th>
+            <th>Area</th>
+            <th>Image</th>
+            <th>Vote</th>
+        </tr>
+
+        {% for c in candidates %}
+        <tr>
+            <td>{{ c.cname }}</td>
+            <td>{{ c.pname }}</td>
+            <td>{{ c.area }}</td>
+            <td>
+                <img src="{{ c.image }}" width="120" height="120">
+            </td>
+            <td>
+                <a href="#">Click Here</a>
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+    </center>
+    <!-- ✅ TABLE ENDS HERE -->
+
+</div>
+</body>
+</html>

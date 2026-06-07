@@ -1,0 +1,95 @@
+{% load static %}
+
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>E-Voting</title>
+
+```
+<style type="text/css">
+    body { font-family: Helvetica, sans-serif; text-align:center; }
+    h2, h3 { margin-top:0; }
+    #results { margin:20px auto; padding:20px; border:1px solid; background:#ccc; width:350px; }
+    #my_camera { margin:auto; }
+</style>
+
+<!-- Webcam.js -->
+<script type="text/javascript" src="{% static 'webcam.min.js' %}"></script>
+
+<script type="text/javascript">
+    function take_snapshot() {
+
+        Webcam.snap(function(data_uri) {
+
+            // Show captured image
+            document.getElementById('results').innerHTML =
+                '<h3>Captured Image:</h3>' +
+                '<img src="'+data_uri+'" width="300"/>';
+
+            // Send image to Django backend
+            fetch("/WebCam", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded",
+                    "X-CSRFToken": "{{ csrf_token }}"
+                },
+                body: "image=" + encodeURIComponent(data_uri)
+            })
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("sr").innerHTML = data;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+                document.getElementById("sr").innerHTML = "Error sending image";
+            });
+
+        });
+    }
+</script>
+```
+
+</head>
+
+<body>
+
+```
+<h1>E-Voting Face Capture</h1>
+<h3>Capture your face for registration</h3>
+
+<!-- Webcam Preview -->
+<div id="my_camera"></div>
+
+<!-- Configure Webcam -->
+<script type="text/javascript">
+    Webcam.set({
+        width: 320,
+        height: 240,
+        image_format: 'png',
+        png_quality: 90
+    });
+    Webcam.attach('#my_camera');
+</script>
+
+<!-- Capture Button -->
+<br/>
+<input type="button" value="📸 Take Snapshot" onclick="take_snapshot()">
+
+<!-- Display Captured Image -->
+<div id="results">Your captured image will appear here...</div>
+
+<!-- Server Response -->
+<div id="sr" style="margin-top:10px; font-weight:bold;"></div>
+
+<!-- Signup Submit -->
+<form name="f1" method="post" action="{% url 'saveSignup' %}">
+    {% csrf_token %}
+    <br/>
+    <input type="submit" value="✅ Complete Signup">
+</form>
+```
+
+</body>
+</html>
